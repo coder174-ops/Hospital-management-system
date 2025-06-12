@@ -1,9 +1,13 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { assets } from '../assets/assets';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const navigate=useNavigate();
+  const [dropMenu, setDropMenu] = useState(false);
+  const [token, setToken] = useState(true);
 
   return (
     <div className='flex items-center justify-between px-4 py-4 border-b border-gray-300 relative'>
@@ -26,9 +30,23 @@ const Navbar = () => {
 
       {/* Create Account Button */}
       <div className='hidden md:block'>
-        <button className='bg-[#5f6FFF] text-white px-5 py-2 rounded-full font-bold text-base md:px-2 md:py-1'>
+        {
+          token?
+          <div className='flex items-center gap-1 group relative cursor-pointer'>
+             <img className='w-9 rounded-full' src={assets.profile_pic} alt="" />
+             <img className='w-3 ' src={assets.dropdown_icon} alt="" />
+             <div className='absolute top-0 right-0 pt-14 font-medium text-base text-gray-600 hidden z-20 group-hover:block'>
+              <div className='min-w-48 bg-stone-100 rounded flex flex-col p-4 gap-2'>
+                <p onClick={()=>navigate('./my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
+                <p onClick={()=>navigate('./my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
+                <p onClick={()=>setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
+              </div>
+             </div>
+          </div>
+          :<button onClick={()=>navigate('./login')}  className='bg-[#5f6FFF] text-white px-5 py-2 rounded-full font-bold text-base md:px-2 md:py-1'>
           Create account
         </button>
+        }
       </div>
 
       {/* Hamburger Menu Button */}
@@ -63,7 +81,7 @@ const Navbar = () => {
                 <li>{['HOME', 'ALL DOCTORS', 'ABOUT', 'CONTACT'][index]}</li>
               </NavLink>
             ))}
-            <button className='bg-[#5f6FFF] text-white px-4 py-2 rounded-full font-bold'>
+            <button  onClick={()=>navigate('./login')} className='bg-[#5f6FFF] text-white px-4 py-2 rounded-full font-bold'>
               Create account
             </button>
           </ul>
