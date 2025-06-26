@@ -13,7 +13,7 @@ const Navbar = () => {
     <div className='flex items-center justify-between px-4 py-4 border-b border-gray-300 relative'>
       {/* Logo + Title */}
       <div className='flex items-center gap-2 cursor-pointer'>
-        <img className='w-10 h-10' src={assets.logo} alt="Logo" />
+        <img onClick={() => navigate('/')} className='w-10 h-10' src={assets.logo} alt="Logo" />
         <h2 className='text-2xl sm:text-sm md:text-xl font-bold text-[#5f6FFF]'>Prescripto</h2>
       </div>
 

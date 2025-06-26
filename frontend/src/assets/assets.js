@@ -10,6 +10,7 @@ import Pediatricians from './Pediatricians.svg'
 import Neurologist from './Neurologist.svg'
 import Gastroenterologist from './Gastroenterologist.svg'
 import General_physician from './General_physician.svg'
+import banner_img from './banner_img.png'
 import doctor1 from './doctor1.png'
 import doctor2 from './doctor2.png'
 import doctor3 from './doctor3.png'
@@ -27,6 +28,7 @@ export const assets={
   header_group_pic1,
   header_arrow,
   header_pic3,
+  banner_img
 }
 
 export const specialityData=[
@@ -61,7 +63,7 @@ export const doctors=[
     _id:'doc1',
     name:'Dr. Richard james',
     image:doctor1,
-    speciality:'Gemneral physician',
+    speciality:'General_physician',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
@@ -76,7 +78,7 @@ export const doctors=[
     _id:'doc2',
     name:'Dr. Richard james',
     image:doctor2,
-    speciality:'Gemneral physician',
+    speciality:'Neurologist',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
@@ -90,7 +92,7 @@ export const doctors=[
     _id:'doc3',
     name:'Dr. Richard james',
     image:doctor3,
-    speciality:'Gemneral physician',
+    speciality:'Dermatologist',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
@@ -104,7 +106,7 @@ export const doctors=[
     _id:'doc4',
     name:'Dr. Richard james',
     image:doctor4,
-    speciality:'Gemneral physician',
+    speciality:'Gastroenterologist',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
@@ -118,7 +120,7 @@ export const doctors=[
     _id:'doc5',
     name:'Dr. Richard james',
     image:doctor5,
-    speciality:'Gemneral physician',
+    speciality:'Gynecologist',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
@@ -132,7 +134,7 @@ export const doctors=[
     _id:'doc6',
     name:'Dr. Richard james',
     image:doctor6,
-    speciality:'Gemneral physician',
+    speciality:'Pediatricians',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
@@ -146,7 +148,7 @@ export const doctors=[
     _id:'doc7',
     name:'Dr. Richard james',
     image:doctor7,
-    speciality:'Gemneral physician',
+    speciality:'General_physician',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
@@ -160,7 +162,7 @@ export const doctors=[
     _id:'doc8',
     name:'Dr. Richard james',
     image:doctor2,
-    speciality:'Gemneral physician',
+    speciality:'Pediatricians',
     degree:'MBBS',
     experience:'4 years',
     about:'Dr. Davis has a strong commitement comprenshive medical care',
