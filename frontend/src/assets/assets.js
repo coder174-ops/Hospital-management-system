@@ -1,6 +1,7 @@
 import logo from './logo.png';
 import verified_icon from './verified_icon.svg';
 import info_icon from './info_icon.svg';
+import about_page from './about_image.png';
 import profile_pic from './profile_pic.jpg';
 import dropdown_icon from './dropdown_icon.png'
 import header_group_pic1 from './header_group_pic1.png'
@@ -32,7 +33,8 @@ export const assets={
   header_pic3,
   banner_img,
   verified_icon,
-  info_icon
+  info_icon,
+  about_page
 }
 
 export const specialityData=[
