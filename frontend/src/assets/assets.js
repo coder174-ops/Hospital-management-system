@@ -3,7 +3,7 @@ import verified_icon from './verified_icon.svg';
 import info_icon from './info_icon.svg';
 import about_page from './about_image.png';
 import contact_image from './contact_image.png';
-import profile_pic from './profile_pic.jpg';
+import profile_pic from './profile_pic.png';
 import dropdown_icon from './dropdown_icon.png'
 import header_group_pic1 from './header_group_pic1.png'
 import header_arrow from './header_arrow.png'
@@ -36,7 +36,7 @@ export const assets={
   verified_icon,
   info_icon,
   about_page,
-  contact_image
+  contact_image,
 }
 
 export const specialityData=[
