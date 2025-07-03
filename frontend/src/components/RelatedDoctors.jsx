@@ -1,14 +1,24 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
+import React, { useContext, useEffect, useState } from 'react'
+import { AppContext } from '../context/AppContext'
+import { useNavigate } from 'react-router-dom'
 
-const TopDoctors = () => {
-  const navigate=useNavigate();
+const RelatedDoctors = ({speciality,docId}) => {
 
-  const {doctors} =useContext(AppContext);
+const {doctors}=useContext(AppContext)
+const navigate=useNavigate();
+
+const [relDoc, setRelDocs] = useState([])
+
+useEffect(() => {
+  if(doctors.length >0 && speciality){
+    const doctorsData=doctors.filter((doc)=>doc.speciality === speciality && doc._id !== docId)
+    setRelDocs(doctorsData)
+  }
+}, [doctors,speciality,docId])
+
 
   return (
-    <div className='flex flex-col items-center gap-6 my-16 text-gray-700 md:mx-10'>
+     <div className='flex flex-col items-center gap-6 my-16 text-gray-700 md:mx-10'>
       
       {/* Heading */}
       <h1 className='text-3xl font-semibold text-center'>Top Doctors to Book</h1>
@@ -18,7 +28,7 @@ const TopDoctors = () => {
 
       {/* Doctor Cards Grid */}
       <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-auto gap-6 px-4 md:px-0'>
-        {doctors.slice(0, 10).map((item, index) => (
+        {relDoc.slice(0, 5).map((item, index) => (
           <div onClick={()=>{navigate(`/appointment/${item._id}`);scrollTo(0,0)}}
             key={index}
             className='border border-blue-200 rounded-xl overflow-hidden shadow-sm bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-2 hover:shadow-lg'
@@ -41,7 +51,7 @@ const TopDoctors = () => {
         Show More
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default TopDoctors;
+export default RelatedDoctors
