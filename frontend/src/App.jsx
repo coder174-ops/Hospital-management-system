@@ -5,10 +5,10 @@ import Login from './pages/Login'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Myprofile from './pages/Myprofile'
-import Myappointment from './pages/MyAppointment';
 import Appointment from './pages/Appointment';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import MyAppointment from './pages/MyAppointment';
 
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
   <Route path='/contact' element={<Contact/>}/>
   <Route path='/about' element={<About/>}/>
   <Route path='/My-profile' element={<Myprofile/>}/>
-  <Route path='/My-appointment' element={<Myappointment/>}/>
+  <Route path='/my-appointments' element={<MyAppointment/>}/>
   <Route path='/appointment/:docId' element={<Appointment />}/>
   </Routes>
   <Footer/>
