@@ -104,8 +104,7 @@ const loginAdmin = async (req, res) => {
       const token = jwt.sign(email + password, process.env.JWT_SECRET);
 
       res.json({ success: true, token });
-    } 
-    else {
+    } else {
       res.json({ success: false, message: "Invalid credentials" });
     }
   } catch (error) {
@@ -114,4 +113,15 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-export { addDoctor, loginAdmin };
+//API to get doctors list for admin panel
+const allDoctors = async (req,res) => {
+  try {
+    const doctors = await doctorModel.find({}).select("-password");
+    res.json({ success: true, doctors })
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { addDoctor, loginAdmin,allDoctors };
