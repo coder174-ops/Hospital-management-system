@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const navigate=useNavigate();
 
-  const {token,setToken}=useContext(AppContext)
+  const {token,setToken,userData}=useContext(AppContext)
   const [dropMenu, setDropMenu] = useState(false);
 
   const logout=()=>{
@@ -38,9 +38,10 @@ const Navbar = () => {
       {/* Create Account Button */}
       <div className='hidden md:block'>
         {
-          token?
+          token  && userData
+          ?
           <div className='flex items-center gap-1 group relative cursor-pointer'>
-             <img className='w-9 rounded-full' src={assets.profile_pic} alt="" />
+             <img className='w-9 rounded-full' src={userData.image} alt="" />
              <img className='w-3 ' src={assets.dropdown_icon} alt="" />
              <div className='absolute top-0 right-0 pt-14 font-medium text-base text-gray-600 hidden z-20 group-hover:block'>
               <div className='min-w-48 bg-stone-100 rounded flex flex-col p-4 gap-2'>
