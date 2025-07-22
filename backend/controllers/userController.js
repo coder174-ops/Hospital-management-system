@@ -2,9 +2,10 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
-import {v2 as cloudinary} from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import razorpay from "razorpay";
 
 //API for user register
 const registerUser = async (req, res) => {
@@ -114,7 +115,6 @@ const getProfile = async (req, res) => {
 
 //   res.json({ success: true, message: "Profile updated successfully" });
 
-
 //   } catch (error) {
 //     console.log(error);
 //     res.json({ success: false, message: error.message });
@@ -131,7 +131,8 @@ const updateProfile = async (req, res) => {
       return res.json({ success: false, message: "Missing Details" });
     }
 
-    const parsedAddress = typeof address === "string" ? JSON.parse(address) : address;
+    const parsedAddress =
+      typeof address === "string" ? JSON.parse(address) : address;
 
     const updateData = {
       name,
@@ -148,13 +149,15 @@ const updateProfile = async (req, res) => {
       updateData.image = imageUpload.secure_url;
     }
 
-    const updatedUser = await userModel.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true, runValidators: true }
-    ).select("-password");
+    const updatedUser = await userModel
+      .findByIdAndUpdate(userId, updateData, { new: true, runValidators: true })
+      .select("-password");
 
-    res.json({ success: true, message: "Profile updated successfully", user: updatedUser });
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -162,74 +165,193 @@ const updateProfile = async (req, res) => {
 };
 
 //API to book appointment
- const bookAppointment=async(req,res)=>{
+const bookAppointment = async (req, res) => {
   try {
-   const {
-    docId,
-    slotDate,
-    slotTime
-  }=req.body
+    const { docId, slotDate, slotTime } = req.body;
 
-  const userId = req.userId; 
-   
-   const docData=await doctorModel.findById(docId).select('-password')
+    const userId = req.userId;
 
-   if(!docData.available){
-    return res.json({success:false,message:'Doctor not available'})
-   }
+    const docData = await doctorModel.findById(docId).select("-password");
 
-   let slots_booked =docData.slots_booked
-
-   //checking for slot availability
-
-   if(slots_booked[slotDate]){
-    if(slots_booked[slotDate].includes(slotTime)){
-      return res.json({success:false,message:'Slot not available'})
+    if (!docData.available) {
+      return res.json({ success: false, message: "Doctor not available" });
     }
-    else{
-      slots_booked[slotDate].push(slotTime)
+
+    let slots_booked = docData.slots_booked;
+
+    //checking for slot availability
+
+    if (slots_booked[slotDate]) {
+      if (slots_booked[slotDate].includes(slotTime)) {
+        return res.json({ success: false, message: "Slot not available" });
+      } else {
+        slots_booked[slotDate].push(slotTime);
+      }
+    } else {
+      slots_booked[slotDate] = [];
+      slots_booked[slotDate].push(slotTime);
     }
-   }else{
-    slots_booked[slotDate]=[]
-    slots_booked[slotDate].push(slotTime)
-   }
 
-  //  const userData=await userModel.findById(userId).select('-password')
+    //  const userData=await userModel.findById(userId).select('-password')
 
-  const userData = await userModel.findById(userId).select('name email phone');
+    const userData = await userModel
+      .findById(userId)
+      .select("name email phone");
 
-  delete docData.slots_booked
+    delete docData.slots_booked;
 
-  const appointmentData={
-    userId,
-    docId,
-      userdata: {                      
+    const appointmentData = {
+      userId,
+      docId,
+      userdata: {
         name: userData.name,
         email: userData.email,
-        phone: userData.phone
-    },
-       docData: {                       
-        name: docData.name,
-        speciality: docData.speciality
-    },
-    amount:docData.fees,
-    slotTime,
-    slotDate,
-    date:Date.now()
+        phone: userData.phone,
+      },
+      //    docData: {
+      //     name: docData.name,
+      //     speciality: docData.speciality,
+      //     image:docData.image
+      // },
+      // userData,
+      docData,
+      amount: docData.fees,
+      slotTime,
+      slotDate,
+      date: Date.now(),
+    };
+
+    const newAppointment = new appointmentModel(appointmentData);
+    await newAppointment.save();
+
+    //save new slots data in docData
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked });
+
+    res.json({ success: true, message: "appointment Booked" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
   }
+};
 
-  const newAppointment=new appointmentModel(appointmentData)
-  await newAppointment.save()
+//API to get user appointment for frontend my-appointment page
+const listAppointment = async (req, res) => {
+  try {
+    const userId = req.userId; // ✅ Secure, from JWT middleware
 
-  //save new slots data in docData
-  await doctorModel.findByIdAndUpdate(docId,{slots_booked})
+    const appointments = await appointmentModel.find({ userId });
 
-  res.json({success:true,message:'appointment Booked'})
+    res.json({ success: true, appointments });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+//API to cancel appointment
+
+const cancelappointment = async (req, res) => {
+  try {
+    const { appointmentId } = req.body;
+
+    const userId = req.userId; // ✅ Secure, from JWT middleware
+
+    const appointmentData = await appointmentModel.findById(appointmentId);
+
+    //verify appointment user
+    if (appointmentData.userId !== userId) {
+      return res.json({ success: false, message: "UnauthoriZed action" });
+    }
+
+    await appointmentModel.findByIdAndUpdate(appointmentId, {
+      cancelled: true,
+    });
+
+    //releasing doctor slot
+
+    const { docId, slotDate, slotTime } = appointmentData;
+
+    const doctorData = await doctorModel.findById(docId);
+
+    let slots_booked = doctorData.slots_booked;
+
+    slots_booked[slotDate] = slots_booked[slotDate].filter(
+      (e) => e !== slotTime
+    );
+
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked });
+
+    res.json({ success: true, message: "appointment cancelled" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const razorpayInstance = new razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_SECRET_KEY,
+});
+
+//API to make of appointment using razorpay
+
+const paymentRazorpay = async (req, res) => {
+  try {
+    const { appointmentId } = req.body;
+    const appointmentData = await appointmentModel.findById(appointmentId);
+
+    if (!appointmentData || appointmentData.cancelled) {
+      return res.json({
+        success: false,
+        message: "Appointment Cancelled or not found",
+      });
+    }
+    //create option for razorpay payment
+
+    const options = {
+      amount: appointmentData.amount * 100,
+      currency: process.env.CURRENCY,
+      receipt: appointmentId,
+    };
+
+    //creation of an order
+    const order = await razorpayInstance.orders.create(options);
+
+    res.json({ success: true, order });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+//API  to verify payment of razorpay
+const verifyRazorpay =async(req,res)=>{
+  try {
+    
+    const {razorpay_order_id}=req.body
+    const orderInfo=await razorpayInstance.orders.fetch(razorpay_order_id)
+
+    if(orderInfo.status === 'paid'){
+     await appointmentModel.findByIdAndUpdate(orderInfo.receipt,{payment:true})
+     res.json({success:true,message:"payment successfully"})
+    }else{
+       res.json({success:false,message:"payment Failed"})
+    }
 
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
   }
- }
+}
 
-export { registerUser, loginUser, getProfile ,updateProfile,bookAppointment};
+export {
+  registerUser,
+  loginUser,
+  getProfile,
+  updateProfile,
+  bookAppointment,
+  listAppointment,
+  cancelappointment,
+  paymentRazorpay,
+  verifyRazorpay
+};
