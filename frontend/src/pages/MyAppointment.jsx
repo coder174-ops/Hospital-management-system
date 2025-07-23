@@ -27,7 +27,6 @@ const MyAppointment = () => {
     "Dec",
   ];
 
-  const navigate = useNavigate();
 
   const slotDateFormat = (slotDate) => {
     const dateArray = slotDate.split("_");
@@ -37,6 +36,8 @@ const MyAppointment = () => {
 
     return `${day} ${months[monthIndex]} ${year}`;
   };
+
+   const navigate = useNavigate();
 
   const getUserAppointments = async () => {
     try {

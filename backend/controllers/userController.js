@@ -196,17 +196,18 @@ const bookAppointment = async (req, res) => {
 
     const userData = await userModel
       .findById(userId)
-      .select("name email phone");
+      .select("name email phone image ");
 
     delete docData.slots_booked;
 
     const appointmentData = {
       userId,
       docId,
-      userdata: {
+      userData: {
         name: userData.name,
         email: userData.email,
         phone: userData.phone,
+        image: userData.image,
       },
       //    docData: {
       //     name: docData.name,

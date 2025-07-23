@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Admin/Dashboard';
-import AllApointments from './pages/Admin/AllApointments';
+import AllAppointments from './pages/Admin/AllAppointments';
 import AddDoctor from './pages/Admin/AddDoctor';
 import DoctorList from './pages/Admin/DoctorList';
 
@@ -25,7 +25,7 @@ const {aToken}=useContext(AdminContext)
         <Routes>
           <Route path='/' element={<></>}/>
           <Route path='/admin-dashboard' element={<Dashboard/>}/>
-          <Route path='/all-apointments' element={<AllApointments/>}/>
+          <Route path='/all-appointments' element={<AllAppointments/>}/>
           <Route path='/add-doctors' element={<AddDoctor/>}/>
           <Route path='/doctor-list' element={<DoctorList/>}/>
 
