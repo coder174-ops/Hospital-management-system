@@ -22,7 +22,7 @@ const Sidebar = () => {
         <ul className="text-[#515151] mt-5 space-y-1">
           <NavLink to={"/admin-dashboard"} className={linkClasses}>
             <img src={assets.home_icon} alt="Dashboard" className="w-5 h-5" />
-            <p>Dashboard</p>
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
 
           <NavLink to={"/all-appointments"} className={linkClasses}>
@@ -31,12 +31,12 @@ const Sidebar = () => {
               alt="Appointments"
               className="w-5 h-5"
             />
-            <p>Appointments</p>
+            <p className="hidden md:block">Appointments</p>
           </NavLink>
 
           <NavLink to={"/add-doctors"} className={linkClasses}>
             <img src={assets.add_icon} alt="Add Doctor" className="w-5 h-5" />
-            <p>Add Doctor</p>
+            <p className="hidden md:block">Add Doctor</p>
           </NavLink>
 
           <NavLink to={"/doctor-list"} className={linkClasses}>
@@ -45,7 +45,7 @@ const Sidebar = () => {
               alt="Doctors List"
               className="w-5 h-5"
             />
-            <p>Doctors List</p>
+            <p className="hidden md:block">Doctors List</p>
           </NavLink>
         </ul>
       )}
@@ -54,7 +54,7 @@ const Sidebar = () => {
         <ul className="text-[#515151] mt-5 space-y-1">
           <NavLink to={"/doctor-dashboard"} className={linkClasses}>
             <img src={assets.home_icon} alt="Dashboard" className="w-5 h-5" />
-            <p>Dashboard</p>
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
 
           <NavLink to={"/doctor-appointments"} className={linkClasses}>
@@ -63,7 +63,7 @@ const Sidebar = () => {
               alt="Appointments"
               className="w-5 h-5"
             />
-            <p>Appointments</p>
+            <p className="hidden md:block">Appointments</p>
           </NavLink>
 
           <NavLink to={"/doctor-profile"} className={linkClasses}>
@@ -72,7 +72,7 @@ const Sidebar = () => {
               alt="Doctors Profile"
               className="w-5 h-5"
             />
-            <p>Doctors Profile</p>
+            <p className="hidden md:block">Doctors Profile</p>
           </NavLink>
         </ul>
       )}
