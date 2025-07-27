@@ -85,42 +85,6 @@ const getProfile = async (req, res) => {
   }
 };
 
-// //API to update user profile data
-
-// const updateProfile = async (req, res) => {
-//   try {
-//     const { userId, name, phone, address, dob, gender } = req.body;
-//     const imageFile = req.file;
-
-//     if (!name || !phone || !dob || !gender) {
-//       return res.json({ success: false, message: "Missing Details" });
-//     }
-//     await userModel.findByIdAndUpdate(userId, {
-//       name,
-//       phone,
-//       address: JSON.parse(address),
-//       dob,
-//       gender,
-//     });
-
-//     if(imageFile){
-//       //upload image to cloudinary
-//       const imageUpload=await cloudinary.uploader.upload(imageFile.path, {
-//         resource_type: "image",
-//     })
-//     const imageUrl = imageUpload.secure_url;
-
-//       await userModel.findByIdAndUpdate(userId,{image:imageUrl})
-//   }
-
-//   res.json({ success: true, message: "Profile updated successfully" });
-
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ success: false, message: error.message });
-//   }
-// };
-
 const updateProfile = async (req, res) => {
   try {
     const userId = req.userId; // ✅ use userId from auth middleware
@@ -173,6 +137,12 @@ const bookAppointment = async (req, res) => {
 
     const docData = await doctorModel.findById(docId).select("-password");
 
+    
+    // Add this check:
+    if (!docData) {
+      return res.json({ success: false, message: "Doctor not found" });
+    }
+
     if (!docData.available) {
       return res.json({ success: false, message: "Doctor not available" });
     }
@@ -192,18 +162,21 @@ const bookAppointment = async (req, res) => {
       slots_booked[slotDate].push(slotTime);
     }
 
-    //  const userData=await userModel.findById(userId).select('-password')
-
     const userData = await userModel
       .findById(userId)
       .select("name email phone image ");
+
+
+    if (!userData) {
+  return res.json({ success: false, message: "User not found" });
+}
 
     delete docData.slots_booked;
 
     const appointmentData = {
       userId,
       docId,
-      userData: {
+     userData: {
         name: userData.name,
         email: userData.email,
         phone: userData.phone,
@@ -214,7 +187,7 @@ const bookAppointment = async (req, res) => {
       //     speciality: docData.speciality,
       //     image:docData.image
       // },
-      // userData,
+      // userData
       docData,
       amount: docData.fees,
       slotTime,

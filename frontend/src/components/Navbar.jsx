@@ -45,13 +45,13 @@ const Navbar = () => {
              <img className='w-3 ' src={assets.dropdown_icon} alt="" />
              <div className='absolute top-0 right-0 pt-14 font-medium text-base text-gray-600 hidden z-20 group-hover:block'>
               <div className='min-w-48 bg-stone-100 rounded flex flex-col p-4 gap-2'>
-                <p onClick={()=>navigate('./my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
-                <p onClick={()=>navigate('./my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
+                <p onClick={()=>navigate('/my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
+                <p onClick={()=>navigate('/my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
                 <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
               </div>
              </div>
           </div>
-          :<button onClick={()=>navigate('./login')}  className='bg-[#5f6FFF] text-white px-5 py-2 rounded-full font-bold text-base md:px-2 md:py-1'>
+          :<button onClick={()=>navigate('/login')}  className='bg-[#5f6FFF] text-white px-5 py-2 rounded-full font-bold text-base md:px-2 md:py-1'>
           Create account
         </button>
         }
@@ -89,7 +89,7 @@ const Navbar = () => {
                 <li>{['HOME', 'ALL DOCTORS', 'ABOUT', 'CONTACT'][index]}</li>
               </NavLink>
             ))}
-            <button  onClick={()=>navigate('./login')} className='bg-[#5f6FFF] text-white px-4 py-2 rounded-full font-bold'>
+            <button  onClick={()=>navigate('/login')} className='bg-[#5f6FFF] text-white px-4 py-2 rounded-full font-bold'>
               Create account
             </button>
           </ul>
