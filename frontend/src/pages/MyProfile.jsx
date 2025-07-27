@@ -4,7 +4,7 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const MyProfile = () => {
+const Myprofile = () => {
   const { userData, setUserData, token, backendUrl, loadUserProfileData } =
     useContext(AppContext);
   const [isEdit, setIsEdit] = useState(false);
@@ -207,4 +207,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default Myprofile;

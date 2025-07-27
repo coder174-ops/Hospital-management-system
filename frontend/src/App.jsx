@@ -4,13 +4,13 @@ import Doctors from './pages/Doctors'
 import Login from './pages/Login'
 import About from './pages/About'
 import Contact from './pages/Contact'
-import Myprofile from './pages/Myprofile'
 import Appointment from './pages/Appointment';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import MyAppointment from './pages/MyAppointment';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Myprofile from './pages/MyProfile';
 
 
 const App = () => {
